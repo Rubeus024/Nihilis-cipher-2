@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html lang="pl">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Stronka</title>
+</head>
+<body>
+	<script type="text/javascript" >
+
+	var keyOne="anakonda".toLowerCase().split("").reverse(); // pierwszyklucz potrzebny do tablicy polybiusSquare1D, metoda reverse() potrzebna na potrzeby algorytmu
+	var asciiTable=[ "a", "b", "c", "d", "e","f", "g", "h", "i", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t","u","v","w", "x", "y","z"];
+	keyOne.forEach(function(element,index,array){ 
+	if(asciiTable.indexOf(element)!=-1) //wartosc -1 metody indexOf wskazuje brak wskazanego eleentu w tabeli
+		asciiTable.splice(asciiTable.indexOf(element),1); 
+		});
+	var keyClean= new Array(); // klucz z niepowtarzajacymi sie literami
+	keyOne.forEach(function (element,index,array){ 
+	if(array.indexOf(element,index+1)==-1)
+		keyClean.push(element);
+	})
+	keyClean.reverse();
+	var polybiusSquare1D=keyClean.concat(asciiTable);	// łączenie klucza z pozostałymi literami tablicy
+	for(var i=0 ;i<25 ;i++){ //pętla wypisującą gotową tablicę polybiusSquare1D na ekranie
+		if(i%5==0 && i!=0){
+			document.write("<br>")
+			document.write(i+1," ",polybiusSquare1D[i]," ");
+		}
+		else
+			document.write(i+1," ",polybiusSquare1D[i]," ");
+	}
+	document.write("<br><br><br>","----------------------------<br>")
+	
+	var keyTwoCharNumbers="palenica".split("").map(function (element,index,array){ //tablica zawierająca pozycje liter( ale nie są jeszcze zakodowane!) w tablicy polybiusSquare1D
+		return polybiusSquare1D.indexOf(element)+1;
+	});;
+	//zapytanie konsoli
+	var password=prompt("Przekaż hasło do zakodowania:").toLowerCase().split("").map(function (element,index,array){
+		return polybiusSquare1D.indexOf(element)+1;
+	});
+	// funkcja kodująca poszczególne znaki korzystając z tablicy polybiusSquare1D
+	function EncodeString(arrayOfCharacters){ 
+		var table=new Array();
+
+		for(var i=0;i<arrayOfCharacters.length;i++){
+			if(arrayOfCharacters[i]<=5){
+				table.push(10+(arrayOfCharacters[i]));
+			}
+			else if (arrayOfCharacters[i]>5 && arrayOfCharacters[i]<=10){
+				table.push(20+(arrayOfCharacters[i]-5));
+			}
+			else if (arrayOfCharacters[i]>10 && arrayOfCharacters[i]<=15){
+				table.push(30+(arrayOfCharacters[i]-10));
+			}
+			else if (arrayOfCharacters[i]>15 && arrayOfCharacters[i]<=20){
+				table.push(40+(arrayOfCharacters[i]-15));
+			}
+			else{
+				table.push(50+(arrayOfCharacters[i]-20));
+			}
+		}
+		return table;
+	}
+	//wypisanie na ekranie zakodowany klucz i wiadomość.
+	document.write("klucz drugi: palenica","<br>",EncodeString(keyTwoCharNumbers) 
+	,"<br> Zakodowane hasło: <br>",EncodeString(password),"<br>");
+	var result=EncodeString(keyTwoCharNumbers); //kodowanie drugiego klucza
+	var y=EncodeString(password);
+	var wynik=y.map(function (a,b){ //sumowanie dwóch zakodowanych stringów
+		return a+result[b];
+	})
+document.write("Oto Końcowy wynik<br>");
+document.write(wynik);
+
+	</script>
+</body>
+</html>
